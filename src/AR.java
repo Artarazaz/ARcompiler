@@ -13,6 +13,7 @@ public class AR {
         Scanner scanner = new Scanner(file);
         String pName = scanner.nextLine();
         if (programCheck(pName, scanner)) {
+            scanner = new Scanner(file);
             if (varName(scanner)){
                 scanner = new Scanner(file);
                 if (func(scanner)) {
@@ -45,7 +46,8 @@ public class AR {
                         if (check == ';') {
                             break;
                         } else if (!Character.isAlphabetic(check) && !Character.isDigit(check)) {
-                            throw new ArithmeticException("Unexpected token on index " + i + " of input letter = " + pName.charAt(i));
+                            throw new ArithmeticException("Unexpected token on index " + i
+                                    + " of input letter = " + pName.charAt(i));
                         }
                     }
                     programName.append(pName.charAt(i));
@@ -68,7 +70,7 @@ public class AR {
 
     public static Boolean varName(Scanner scanner) {
         boolean flag;
-        int lineCounter = 2;
+        int lineCounter = 1;
         while (scanner.hasNextLine()) {
             String next = scanner.nextLine();
             int founder = lineCounter;
@@ -101,7 +103,7 @@ public class AR {
     }
     public static Boolean func(Scanner scanner) {
         boolean flag;
-        int lineCounter = 2;
+        int lineCounter = 1;
         while (scanner.hasNextLine()) {
             String next = scanner.nextLine();
             int founder = lineCounter;
