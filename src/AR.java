@@ -8,21 +8,27 @@ public class AR {
         System.out.println("Please enter your file path: ");
         Scanner scanner1 = new Scanner(System.in);
         String filePath = scanner1.next();
+        scanner1.close();
         File file = new File(filePath);
         Scanner scanner = new Scanner(file);
         String pName = scanner.nextLine();
-        if (programCheck(pName)){
-            System.out.println(scanner.next());
+        if (programCheck(pName, scanner)) {
+            if (varName(scanner)){
+                scanner = new Scanner(file);
+                if (func(scanner)) {
+                    System.out.println("test passed");
+                }
+            }
         }
     }
 
-    public static Boolean programCheck(String pName) {
+    public static Boolean programCheck(String pName, Scanner scanner) {
         char[] process = {'p', 'r', 'o', 'c', 'e', 's', 's'};
         boolean processCheck = true;
         char check;
         StringBuilder programName = new StringBuilder();
         int i;
-        for ( i = 0; i < 7; i++) {
+        for (i = 0; i < 7; i++) {
             if (pName.charAt(i) != process[i]) {
                 processCheck = false;
                 break;
@@ -51,15 +57,81 @@ public class AR {
             } else {
                 throw new ArithmeticException("Unexpected token for program name");
             }
-            System.out.println("Name of your program: " + programName);
+            System.out.println("Program name: " + programName);
         } else {
             throw new ArithmeticException("Unexpected main token, excepted letter {" + process[i] +
                     "} instead of {" + pName.charAt(i) + "} at index " + i);
         }
-        //System.out.println("Name of your program: " + programCheck(pName));
+        scanner.reset();
         return true;
     }
 
+    public static Boolean varName(Scanner scanner) {
+        boolean flag;
+        int lineCounter = 2;
+        while (scanner.hasNextLine()) {
+            String next = scanner.nextLine();
+            int founder = lineCounter;
+            if (next.contains("var")) {
+                flag = false;
+                while (scanner.hasNextLine()) {
+                    next = scanner.nextLine();
+                    if (next.contains("endVar")) {
+                        flag = true;
+                        lineCounter++;
+                        break;
+                    }
+                    if (next.contains("var")) {
+                        lineCounter++;
+                        break;
+                    }
+                    lineCounter++;
+                }
+                if (!flag) {
+                    throw new ArithmeticException("You missed an endVar for a var found on line " + founder);
+                }
+
+            } else if (next.contains("endVar")) {
+                throw new ArithmeticException("You missed a var for an endVar that found on line " + lineCounter);
+            }
+            lineCounter++;
+        }
+        scanner.reset();
+        return true;
+    }
+    public static Boolean func(Scanner scanner) {
+        boolean flag;
+        int lineCounter = 2;
+        while (scanner.hasNextLine()) {
+            String next = scanner.nextLine();
+            int founder = lineCounter;
+            if (next.contains("func")) {
+                flag = false;
+                while (scanner.hasNextLine()) {
+                    next = scanner.nextLine();
+                    if (next.contains("endFunc")) {
+                        flag = true;
+                        lineCounter++;
+                        break;
+                    }
+                    if (next.contains("func")) {
+                        lineCounter++;
+                        break;
+                    }
+                    lineCounter++;
+                }
+                if (!flag) {
+                    throw new ArithmeticException("You missed an endFunc for a func found on line " + founder);
+                }
+
+            } else if (next.contains("endFunc")) {
+                throw new ArithmeticException("You missed a func for an endFunc that found on line " + lineCounter);
+            }
+            lineCounter++;
+        }
+        scanner.reset();
+        return true;
+    }
     /*public static String programName(String pName) {
         int i = 8;
         char check = pName.charAt(i);
