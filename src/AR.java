@@ -1,4 +1,6 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 
@@ -17,7 +19,10 @@ public class AR {
             if (varName(scanner)){
                 scanner = new Scanner(file);
                 if (func(scanner)) {
-                    System.out.println("test passed");
+                    scanner = new Scanner(file);
+                    List<String> varNames = new ArrayList<>();
+                    List<String> varValues = new ArrayList<>();
+                    varSaver(scanner);
                 }
             }
         }
@@ -133,6 +138,21 @@ public class AR {
         }
         scanner.reset();
         return true;
+    }
+    public static void varSaver (Scanner scanner){
+        scanner.nextLine();
+        String next;
+        while (scanner.hasNextLine()){
+            next = scanner.nextLine();
+            System.out.println(next + "out");
+            if (next.equals("var")){
+                while (!next.equals("endVar")){
+                    next = scanner.nextLine();
+                    System.out.println(next.concat(" opop"));
+
+                }
+            }
+        }
     }
     /*public static String programName(String pName) {
         int i = 8;
