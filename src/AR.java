@@ -16,13 +16,15 @@ public class AR {
         String pName = scanner.nextLine();
         if (programCheck(pName, scanner)) {
             scanner = new Scanner(file);
-            if (varName(scanner)){
+            if (varName(scanner)) {
                 scanner = new Scanner(file);
                 if (func(scanner)) {
                     scanner = new Scanner(file);
                     List<String> varNames = new ArrayList<>();
                     List<String> varValues = new ArrayList<>();
-                    varSaver(scanner);
+                    varSaver(scanner, varNames, varValues);
+                    System.out.println(varNames);
+                    System.out.println(varValues);
                 }
             }
         }
@@ -106,6 +108,7 @@ public class AR {
         scanner.reset();
         return true;
     }
+
     public static Boolean func(Scanner scanner) {
         boolean flag;
         int lineCounter = 1;
@@ -139,18 +142,71 @@ public class AR {
         scanner.reset();
         return true;
     }
-    public static void varSaver (Scanner scanner){
-        scanner.nextLine();
-        String next;
-        while (scanner.hasNextLine()){
-            next = scanner.nextLine();
-            System.out.println(next + "out");
-            if (next.equals("var")){
-                while (!next.equals("endVar")){
-                    next = scanner.nextLine();
-                    System.out.println(next.concat(" opop"));
 
+    public static void varSaver(Scanner scanner, List<String> varNames, List<String> varValues) {
+        scanner.nextLine();
+        int lineCounter = 1;
+        int i = 0;
+        int j = 0;
+        String next;
+        StringBuilder varName = new StringBuilder();
+        StringBuilder varValue = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            next = scanner.nextLine().replaceAll("\\s+", "");
+            lineCounter++;
+            if (next.equals("var")) {
+                next = scanner.nextLine().replaceAll("\\s+", "");
+                while (!next.equals("endVar")) {
+                    lineCounter++;
+                    if (Character.isAlphabetic(next.charAt(i))) {
+                        while (next.charAt(i) != '=') {
+                            if (next.charAt(i) == '=') {
+                                break;
+                            }
+                            if (!Character.isAlphabetic(next.charAt(i)) && !Character.isDigit(next.charAt(i))) {
+                                throw new ArithmeticException("Unexpected token on index " + i
+                                        + " of variable name letter: " + next.charAt(i));
+                            }
+                            varName.append(next.charAt(i));
+                            i++;
+                        }
+                        varNames.add(String.valueOf(varName));
+                        i++;
+                        if (Character.isDigit(next.charAt(i))) {
+                            j = 1;
+                        }
+                        if (Character.isAlphabetic(next.charAt(i))) {
+                            j = 2;
+                        }
+                        switch (j) {
+                            case 1:
+                                while (i < next.length()) {
+                                    if (!Character.isDigit(next.charAt(i))) {
+                                        throw new ArithmeticException("Unexpected token on index " + i
+                                                + " of variable name letter: " + next.charAt(i) + " on line "
+                                                + lineCounter);
+                                    }
+                                    varValue.append(next.charAt(i));
+                                    i++;
+                                }
+                            case 2:
+                                while (i < next.length()) {
+                                    if (!Character.isAlphabetic(next.charAt(i)) && !Character.isDigit(next.charAt(i))) {
+                                        throw new ArithmeticException("Unexpected token on index " + i
+                                                + " of variable name letter: " + next.charAt(i));
+                                    }
+                                    varValue.append(next.charAt(i));
+                                    i++;
+                                }
+                        }
+                        varValues.add(String.valueOf(varValue));
+                    }
+                    next = scanner.nextLine().replaceAll("\\s+", "");
+                    i = 0;
+                    varName.setLength(0);
+                    varValue.setLength(0);
                 }
+                lineCounter++;
             }
         }
     }
