@@ -165,7 +165,8 @@ public class AR {
                             }
                             if (!Character.isAlphabetic(next.charAt(i)) && !Character.isDigit(next.charAt(i))) {
                                 throw new ArithmeticException("Unexpected token on index " + i
-                                        + " of variable name letter: " + next.charAt(i));
+                                        + " of variable name letter: " + next.charAt(i) + "" +
+                                        " (Line " + lineCounter + ")");
                             }
                             varName.append(next.charAt(i));
                             i++;
@@ -183,8 +184,8 @@ public class AR {
                                 while (i < next.length()) {
                                     if (!Character.isDigit(next.charAt(i))) {
                                         throw new ArithmeticException("Unexpected token on index " + i
-                                                + " of variable name letter: " + next.charAt(i) + " on line "
-                                                + lineCounter);
+                                                + " of variable name letter: " + next.charAt(i) + "" +
+                                                " (Line " + lineCounter + ")");
                                     }
                                     varValue.append(next.charAt(i));
                                     i++;
@@ -193,7 +194,8 @@ public class AR {
                                 while (i < next.length()) {
                                     if (!Character.isAlphabetic(next.charAt(i)) && !Character.isDigit(next.charAt(i))) {
                                         throw new ArithmeticException("Unexpected token on index " + i
-                                                + " of variable name letter: " + next.charAt(i));
+                                                + " of variable name letter: " + next.charAt(i) + "" +
+                                                " (Line " + lineCounter + ")");
                                     }
                                     varValue.append(next.charAt(i));
                                     i++;
