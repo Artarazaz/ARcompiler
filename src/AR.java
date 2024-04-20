@@ -212,25 +212,4 @@ public class AR {
             }
         }
     }
-    /*public static String programName(String pName) {
-        int i = 8;
-        char check = pName.charAt(i);
-        StringBuilder programName = new StringBuilder();
-        if (programCheck(pName)) {
-            if (Character.isAlphabetic(check)) {
-                while (check != ';') {
-                    System.out.println(programName);
-                    check = pName.charAt(i);
-                    if (!Character.isAlphabetic(check) && !Character.isDigit(check)) {
-                        throw new ArithmeticException("Unexpected token on index " + i + " of input letter= " + pName.charAt(i));
-                    }
-                    programName.append(pName.charAt(i));
-                    i++;
-                }
-            } else {
-                throw new ArithmeticException("Unexpected token on first Program Name letter");
-            }
-        }
-        return String.valueOf(programName);
-    }*/
 }
